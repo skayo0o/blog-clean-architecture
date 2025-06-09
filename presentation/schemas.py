@@ -14,7 +14,7 @@ class UserRead(BaseModel):
     is_active: bool
 
     class Config:
-        orm_mode = True
+        model_config = {"from_attributes": True}
 
 class PostCreate(BaseModel):
     title: str
@@ -33,7 +33,7 @@ class PostRead(BaseModel):
     comments_count: int
 
     class Config:
-        orm_mode = True
+        model_config = {"from_attributes": True}
 
 class CommentCreate(BaseModel):
     post_id: int
@@ -51,4 +51,4 @@ class CommentRead(BaseModel):
     parent_comment_id: Optional[int]
 
     class Config:
-        orm_mode = True
+        model_config = {"from_attributes": True}
