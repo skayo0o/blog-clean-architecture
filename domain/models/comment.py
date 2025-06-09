@@ -10,4 +10,4 @@ class Comment:
     content: str
     created_at: datetime = field(default_factory=datetime.utcnow)
     is_deleted: bool = False
-    parent_comment_id: Optional[int] = None  # For nested comments
+    parent_comment_id: Optional[int] = None
