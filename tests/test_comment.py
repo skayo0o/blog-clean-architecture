@@ -5,6 +5,9 @@ import uuid
 client = TestClient(app)
 
 def create_user():
+    '''
+    Создание тестового пользователя для комментариев.
+    '''
     unique = str(uuid.uuid4())
     response = client.post("/users/", json={
         "username": f"commentuser_{unique}",
@@ -13,6 +16,9 @@ def create_user():
     return response.json()["id"]
 
 def create_post(author_id):
+    '''
+    Создание тестового поста для комментариев.
+    '''
     response = client.post("/posts/", json={
         "title": "Comment Post",
         "content": "Content",
@@ -22,6 +28,9 @@ def create_post(author_id):
     return response.json()["id"]
 
 def test_create_comment():
+    '''
+    Тест создания комментария.
+    '''
     author_id = create_user()
     post_id = create_post(author_id)
     response = client.post("/comments/", json={
@@ -36,6 +45,9 @@ def test_create_comment():
     assert data["post_id"] == post_id
 
 def test_get_comment():
+    '''
+    Тест получения комментария по ID.
+    '''
     author_id = create_user()
     post_id = create_post(author_id)
     response = client.post("/comments/", json={
@@ -51,6 +63,9 @@ def test_get_comment():
     assert data["id"] == comment_id
 
 def test_list_comments():
+    '''
+    Тест получения списка комментариев по ID поста.
+    '''
     author_id = create_user()
     post_id = create_post(author_id)
     client.post("/comments/", json={
@@ -64,6 +79,9 @@ def test_list_comments():
     assert isinstance(response.json(), list)
 
 def test_delete_comment():
+    '''
+    Тест удаления комментария.
+    '''
     author_id = create_user()
     post_id = create_post(author_id)
     response = client.post("/comments/", json={

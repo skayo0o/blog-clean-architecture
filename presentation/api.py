@@ -21,10 +21,10 @@ post_service = PostService(RepositoryFactory.create_post_repository())
 comment_service = CommentService(RepositoryFactory.create_comment_repository())
 
 @app.get("/", response_model=dict)
-'''
-Корневой маршрут, возвращающий приветственное сообщение и ссылки на документацию.
-'''
 def root():
+    '''
+    Корневой маршрут, возвращающий приветственное сообщение и ссылки на документацию.
+    '''
     return {
         "message": "Welcome to the Blog API!",
         "docs_url": "/docs",
@@ -32,10 +32,10 @@ def root():
     }
 
 @app.post("/users/", response_model=UserRead)
-'''
-Создание нового пользователя.
-'''
 def create_user(user: UserCreate):
+    '''
+    Создание нового пользователя.
+    '''
     try:
         created = user_service.create_user(
             User(id=0, username=user.username, email=user.email)
@@ -45,28 +45,28 @@ def create_user(user: UserCreate):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/users/", response_model=List[UserRead])
-'''
-Получение списка пользователей.
-'''
 def list_users():
+    '''
+    Получение списка пользователей.
+    '''
     users = user_service.list_users()
     return [UserRead(**u.__dict__) for u in users]
 
 @app.get("/users/{user_id}", response_model=UserRead)
-'''
-Получение пользователя по ID.
-'''
 def get_user(user_id: int):
+    '''
+    Получение пользователя по ID.
+    '''
     user = user_service.get_user(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return UserRead(**user.__dict__)
 
 @app.delete("/users/{user_id}", status_code=204)
-'''
-Удаление пользователя по ID.
-'''
 def delete_user(user_id: int):
+    '''
+    Удаление пользователя по ID.
+    '''
     user = user_service.get_user(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -74,10 +74,10 @@ def delete_user(user_id: int):
     return
 
 @app.post("/posts/", response_model=PostRead)
-'''
-Создание нового поста.
-'''
 def create_post(post: PostCreate):
+    '''
+    Создание нового поста.
+    '''
     created = post_service.create_post(
         Post(
             id=0,
@@ -90,28 +90,28 @@ def create_post(post: PostCreate):
     return PostRead(**created.__dict__)
 
 @app.get("/posts/", response_model=List[PostRead])
-'''
-Получение списка постов с возможностью фильтрации по автору.
-'''
 def list_posts(author_id: Optional[int] = Query(None)):
+    '''
+    Получение списка постов с возможностью фильтрации по автору.
+    '''
     posts = post_service.list_posts(author_id=author_id)
     return [PostRead(**p.__dict__) for p in posts]
 
 @app.get("/posts/{post_id}", response_model=PostRead)
-'''
-Получение поста по ID.
-'''
 def get_post(post_id: int):
+    '''
+    Получение поста по ID.
+    '''
     post = post_service.get_post(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     return PostRead(**post.__dict__)
 
 @app.delete("/posts/{post_id}", status_code=204)
-'''
-Удаление поста по ID.
-'''
 def delete_post(post_id: int):
+    '''
+    Удаление поста по ID.
+    '''
     post = post_service.get_post(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -119,10 +119,10 @@ def delete_post(post_id: int):
     return
 
 @app.post("/comments/", response_model=CommentRead)
-'''
-Создание нового комментария.
-'''
 def create_comment(comment: CommentCreate):
+    '''
+    Создание нового комментария.
+    '''
     created = comment_service.create_comment(
         Comment(
             id=0,
@@ -135,28 +135,28 @@ def create_comment(comment: CommentCreate):
     return CommentRead(**created.__dict__)
 
 @app.get("/comments/", response_model=List[CommentRead])
-'''
-Получение списка комментариев по ID поста.
-'''
 def list_comments(post_id: int = Query(...)):
+    '''
+    Получение списка комментариев по ID поста.
+    '''
     comments = comment_service.list_comments_by_post(post_id)
     return [CommentRead(**c.__dict__) for c in comments]
 
 @app.get("/comments/{comment_id}", response_model=CommentRead)
-'''
-Получение комментария по ID.
-'''
 def get_comment(comment_id: int):
+    '''
+    Получение комментария по ID.
+    '''
     comment = comment_service.get_comment(comment_id)
     if not comment:
         raise HTTPException(status_code=404, detail="Comment not found")
     return CommentRead(**comment.__dict__)
 
 @app.delete("/comments/{comment_id}", status_code=204)
-'''
-Удаление комментария по ID.
-'''
 def delete_comment(comment_id: int):
+    '''
+    Удаление комментария по ID.
+    '''
     comment = comment_service.get_comment(comment_id)
     if not comment:
         raise HTTPException(status_code=404, detail="Comment not found")
